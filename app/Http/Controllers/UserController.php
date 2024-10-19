@@ -53,8 +53,7 @@ class UserController extends Controller
     }
     public function show(string $id)
     {
-        $user = UserModel::with('level')->find($id);
-        
+        $user = UserModel::with('level')->findOrFail($id);
         $breadcrumb = (object) [
             'title' => 'Detail User',
             'list' => ['Home', 'User', 'Detail']
@@ -63,39 +62,22 @@ class UserController extends Controller
         $page = (object) [
             'title' => 'Detail user'
         ];
-        
         $activeMenu = 'user';
-        
-        return view('user.show', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'user' => $user,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('user.show', compact('breadcrumb', 'page', 'user', 'activeMenu'));
     }
     public function edit(string $id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::findOrFail($id);
         $level = LevelModel::all();
-
         $breadcrumb = (object) [
             'title' => 'Edit User',
             'list' => ['Home', 'User', 'Edit']
         ];
-
         $page = (object) [
             'title' => 'Edit user'
         ];
-
         $activeMenu = 'user';
-
-        return view('user.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'user' => $user,
-            'level' => $level,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('user.edit', compact('breadcrumb', 'page', 'user', 'level', 'activeMenu'));
     }
     public function update(Request $request, string $id)
     {
@@ -105,26 +87,23 @@ class UserController extends Controller
             'password' => 'nullable|string|min:5',
             'level_id' => 'required|integer'
         ]);
-
-        $user = UserModel::find($id);
+        $user = UserModel::findOrFail($id);
         $user->update([
             'username' => $request->username,
             'nama' => $request->nama,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
             'level_id' => $request->level_id
         ]);
-
         return redirect('/user')->with('success', 'Data user berhasil diubah');
     }
     public function destroy(string $id)
     {
-        $check = UserModel::find($id);
-        if (!$check) {
+        $user = UserModel::find($id);
+        if (!$user) {
             return redirect('/user')->with('error', "Data user tidak ditemukan");
         }
-
         try {
-            UserModel::destroy($id);
+            $user->delete();
             return redirect('/user')->with('success', 'Data user berhasil dihapus');
         } catch (QueryException $e) {
             return redirect('/user')->with('error', 'Data user gagal dihapus karena terkait dengan data lain');
@@ -136,34 +115,26 @@ class UserController extends Controller
             'title' => 'Daftar User',
             'list' => ['Home', 'User']
         ];
-
         $page = (object) [
             'title' => 'Daftar user yang terdaftar dalam sistem'
         ];
-
         $activeMenu = 'user';
-
         $level = LevelModel::all();
-
-        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
+        return view('user.index', compact('breadcrumb', 'page', 'level', 'activeMenu'));
     }
     public function list(Request $request)
     {
         $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
             ->with('level');
-
         if ($request->level_id) {
             $users->where('level_id', $request->level_id);
         }
-        
         return DataTables::of($users)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
-                $btn = '<a href="'.url('/user/' . $user->user_id).'" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="'.url('/user/' . $user->user_id . '/edit').'" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="'.url('/user/'.$user->user_id).'" onsubmit="return confirm(\'Apakah Anda yakin menghapus data ini?\');">'
-                    . csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm">Hapus</button></form>';
+                $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -172,9 +143,7 @@ class UserController extends Controller
     public function create_ajax()
     {
         $level = LevelModel::select('level_id', 'level_nama')->get();
-
-        return view('user.create_ajax')
-                    ->with('level', $level);
+        return view('user.create_ajax', compact('level'));
     }
     public function store_ajax(Request $request)
     {
@@ -188,9 +157,9 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors(),
+                    'status'    => false,
+                    'message'   => 'Validasi Gagal',
+                    'msgField'  => $validator->errors(),
                 ]);
             }
             UserModel::create([
@@ -202,6 +171,49 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Data user berhasil disimpan'
+            ]);
+        }
+        return redirect('/');
+    }
+    public function edit_ajax(string $id)
+    {
+        $user = UserModel::findOrFail($id);
+        $level = LevelModel::select('level_id', 'level_nama')->get();
+        return view('user.edit_ajax', compact('user', 'level'));
+    }
+    public function update_ajax(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'level_id' => 'required|integer',
+                'username' => 'required|max:20|unique:m_user,username,'.$id.',user_id',
+                'nama' => 'required|max:100',
+                'password' => 'nullable|min:6|max:20'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+            $user = UserModel::find($id);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+            if ($request->filled('password')) {
+                $request->merge(['password' => bcrypt($request->password)]);
+            } else {
+                $request->request->remove('password');
+            }
+            $user->update($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diupdate'
             ]);
         }
         return redirect('/');
