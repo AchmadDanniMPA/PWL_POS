@@ -43,8 +43,6 @@
     <script>
     $(document).ready(function() {
         $('#form-tambah').on('submit', function(event) {
-            event.preventDefault();
-
             $.ajax({
                 url: $(this).attr('action'),
                 type: $(this).attr('method'),

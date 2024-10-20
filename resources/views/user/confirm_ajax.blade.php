@@ -58,8 +58,6 @@
 <script>
     $(document).ready(function() {
         $("#form-delete").on('submit', function(event) {
-            event.preventDefault();
-
             $.ajax({
                 url: $(this).attr('action'),
                 type: $(this).attr('method'),
@@ -70,7 +68,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
-                            text: response.message,
+                            text: response.message
                         });
                         dataUser.ajax.reload();
                     } else {

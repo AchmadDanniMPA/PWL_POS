@@ -173,7 +173,7 @@ class UserController extends Controller
                 'message' => 'Data user berhasil disimpan'
             ]);
         }
-        return redirect('/');
+        return redirect('/user');
     }
     public function edit_ajax(string $id)
     {
@@ -216,7 +216,7 @@ class UserController extends Controller
                 'message' => 'Data berhasil diupdate',
             ]);
         }
-        return redirect('/');
+        return redirect('/user');
     }
     public function confirm_ajax(string $id)
     {
@@ -240,6 +240,6 @@ class UserController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/user');
     }
 }
