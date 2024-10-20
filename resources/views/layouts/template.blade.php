@@ -58,6 +58,8 @@
   @include('layouts.footer')
 </div>
 <!-- ./wrapper -->
+ <!-- Modal Container -->
+<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true"></div>
 
 <!-- jQuery -->
 <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>

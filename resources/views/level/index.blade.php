@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a>
+                <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/level/create_ajax/') }}')">Tambah</button>
             </div>
         </div>
         <div class="card-body">
@@ -27,9 +27,13 @@
         </div>
     </div>
 @endsection
-
 @push('js')
 <script>
+    function modalAction(url) {
+        $('#myModal').load(url, function() {
+            $('#myModal').modal('show');
+        });
+    }
     $(document).ready(function() {
         var dataLevel = $('#table_level').DataTable({
             serverSide: true,
@@ -37,9 +41,6 @@
                 "url": "{{ url('level/list') }}",
                 "dataType": "json",
                 "type": "POST",
-                "data": function(d) {
-                    d.level_kode = $('#level_kode').val();
-                }
             },
             columns: [
                 { data: "DT_RowIndex", className: "text-center", width: "8%", orderable: false, searchable: false },
@@ -47,10 +48,6 @@
                 { data: "level_nama", orderable: true, searchable: true },
                 { data: "action", orderable: false, searchable: false }
             ]
-        });
-
-        $('#level_kode').on('change', function() {
-            dataLevel.ajax.reload();
         });
     });
 </script>
