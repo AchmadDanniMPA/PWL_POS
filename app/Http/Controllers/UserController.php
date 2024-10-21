@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -377,4 +378,35 @@ class UserController extends Controller
         $pdf->render();
         return $pdf->stream('Data User ' . date('Y-m-d H:i:s') . '.pdf');
     }
+    public function profile() {
+        return view('profile');
+    }
+    public function profile_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+            $file = $request->file('file_pfp');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = public_path('images/pfp');
+            $file->move($path, $filename);
+            $user = UserModel::findOrFail(auth()->user()->user_id);
+            $user->profile_picture = $filename;
+            $user->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'Foto profil berhasil diupload',
+                'newProfilePicturePath' => asset('images/pfp/' . $filename),
+            ]);
+        }
+    }    
 }

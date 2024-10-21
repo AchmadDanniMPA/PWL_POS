@@ -12,7 +12,7 @@ class UserModel extends Authenticatable
     use HasFactory;
     protected $table = 'm_user';
     protected $primaryKey = 'user_id';
-    protected $fillable=['level_id','username','nama','password'];
+    protected $fillable = ['level_id', 'username', 'nama', 'password', 'profile_picture'];
     protected $hidden=['password'];
     protected $casts=['password'=>'hashed'];
     public function level():BelongsTo

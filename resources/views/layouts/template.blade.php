@@ -38,7 +38,7 @@
         <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     
         <span class="brand-text font-weight-light">PWL - Starter Code</span>
-      </a>
+    </a>
 
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -61,6 +61,15 @@
   @include('layouts.footer')
 </div>
 <!-- ./wrapper -->
+
+<!-- Modal structure for loading content -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!-- Content will be dynamically loaded via AJAX -->
+    </div>
+  </div>
+</div>
 
 <!-- jQuery -->
 <script src={{ asset('adminlte/plugins/jquery/jquery.min.js')}}></script>
@@ -89,10 +98,33 @@
 
 <!-- AdminLTE App -->
 <script src={{ asset('adminlte/dist/js/adminlte.min.js')}}></script>
+
 <script>
-    //untuk mengirimkan token Laravel CSRF pada setiap request AJAX
+    // Mengirimkan token Laravel CSRF pada setiap request AJAX
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
+    // AJAX logic for profile picture upload or any other modal usage can go here
+    $(document).ready(function() {
+        $('#upload-photo-link').click(function() {
+            $.ajax({
+                url: "{{ url('/profile') }}",  // Fetch the profile upload view
+                type: "GET",
+                success: function(response) {
+                    $('#myModal').html(response);  // Load the response (HTML form) into the modal
+                    $('#myModal').modal('show');   // Show the modal with the profile form
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to load the profile upload form.'
+                    });
+                }
+            });
+        });
+    });
 </script>
+
 @stack('js') <!-- untuk memanggil custom js dari perintah push('js') pada masing-masing view -->
 </body>
 </html>
