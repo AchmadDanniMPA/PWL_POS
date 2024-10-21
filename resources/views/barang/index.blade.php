@@ -7,6 +7,7 @@
                 <button type="button" class="btn btn-sm btn-info mt-1" onclick="modalAction('{{ url('/barang/import') }}')">Import</button>
                 <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/barang/create_ajax/') }}')">Tambah</button>
                 <button type="button" class="btn btn-sm btn-success mt-1" onclick="exportBarang()">Export Barang</button>
+                <button type="button" class="btn btn-sm btn-danger mt-1" onclick="exportBarangPDF()">Export Barang PDF</button>
             </div>
         </div>
         <div class="card-body">
@@ -57,6 +58,9 @@
 @push('js')
 <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
+        function exportBarangPDF() {
+            window.location.href = "{{ route('barang.export_pdf') }}";
+        }
         function exportBarang() {
             window.location.href = "{{ route('barang.export_excel') }}";
         }
