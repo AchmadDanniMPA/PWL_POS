@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
+                <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/barang/create_ajax/') }}')">Tambah</button>
             </div>
         </div>
         <div class="card-body">
@@ -45,9 +45,20 @@
             </table>
         </div>
     </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script>
+        function modalAction(url) {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
         $(document).ready(function() {
             var databarang = $('#table_barang').DataTable({
                 serverSide: true,
@@ -71,6 +82,15 @@
             });
             $('#kategori_id').on('change', function() {
                 databarang.ajax.reload();
+            });
+            $(document).on('click', '.btn-edit', function() {
+                var url = $(this).data('url');
+                modalAction(url);
+            });
+
+            $(document).on('click', '.btn-delete', function() {
+                var url = $(this).data('url');
+                modalAction(url);
             });
         });
     </script>
