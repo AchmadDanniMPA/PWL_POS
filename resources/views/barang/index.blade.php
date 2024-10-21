@@ -4,6 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+                <button type="button" class="btn btn-sm btn-info mt-1" onclick="modalAction('{{ url('/barang/import') }}')">Import</button>
                 <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/barang/create_ajax/') }}')">Tambah</button>
             </div>
         </div>
@@ -53,6 +54,7 @@
     </div>
 @endsection
 @push('js')
+<script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         function modalAction(url) {
             $('#myModal').load(url, function() {
@@ -87,7 +89,6 @@
                 var url = $(this).data('url');
                 modalAction(url);
             });
-
             $(document).on('click', '.btn-delete', function() {
                 var url = $(this).data('url');
                 modalAction(url);
