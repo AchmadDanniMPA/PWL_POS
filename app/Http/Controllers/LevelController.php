@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Response;
 
 class LevelController extends Controller
 {
@@ -203,5 +208,113 @@ class LevelController extends Controller
             }
         }
         return redirect('/level');
+    }
+    public function import()
+    {
+        return view('level.import');
+    }
+    public function import_ajax(Request $request)
+    {
+        if($request->ajax() || $request->wantsJson()){
+            $rules = [
+                'file_level' => ['required', 'mimes:xlsx', 'max:1024']
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if($validator->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+            $file = $request->file('file_level');
+            $reader = IOFactory::createReader('Xlsx');  
+            $reader->setReadDataOnly(true);       
+            $spreadsheet = $reader->load($file->getRealPath()); 
+            $sheet = $spreadsheet->getActiveSheet();  
+            $data = $sheet->toArray(null, false, true, true);  
+            $insert = [];
+            if(count($data) > 1){
+                foreach ($data as $row => $value) {
+                    if($row > 1){ 
+                        $insert[] = [
+                            'level_kode' => $value['A'], 
+                            'level_nama' => $value['B'], 
+                            'created_at' => now(),
+                        ];
+                    }
+                }
+                if(count($insert) > 0){
+                    LevelModel::insertOrIgnore($insert);    
+                }
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
+        }
+        return redirect('/level');
+    }
+    public function export_excel()
+    {
+        $level = LevelModel::select('level_kode', 'level_nama')->get();
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kode Level');
+        $sheet->setCellValue('C1', 'Nama Level');
+        $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $row = 2;
+        foreach ($level as $key => $value) {
+            $sheet->setCellValue('A' . $row, $key + 1);
+            $sheet->setCellValue('B' . $row, $value->level_kode);
+            $sheet->setCellValue('C' . $row, $value->level_nama);
+            $row++;
+        }
+        foreach (range('A', 'C') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $sheet->setTitle('Data Level');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data_Level_' . date('Y-m-d_H-i-s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit;
+    }
+    public function export_pdf()
+    {
+        $level = LevelModel::select('level_kode', 'level_nama')->get();
+        $pdf = Pdf::loadView('level.export_pdf', ['level' => $level]);
+        $pdf->setPaper('a4', 'portrait');
+        return $pdf->stream('Data_Level_' . date('Y-m-d_H-i-s') . '.pdf');
+    }
+    public function template_excel()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Kode Level');
+        $sheet->setCellValue('B1', 'Nama Level');
+        $sheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $sheet->setCellValue('A2', 'ADM');
+        $sheet->setCellValue('B2', 'Admin');
+        $sheet->setCellValue('A3', 'MNG');
+        $sheet->setCellValue('B3', 'Manager');
+        $sheet->setCellValue('A4', 'STF');
+        $sheet->setCellValue('B4', 'Staff');
+        foreach (range('A', 'B') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'template_level.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($temp_file);
+        return Response::download($temp_file, $fileName)->deleteFileAfterSend(true);
     }
 }

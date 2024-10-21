@@ -4,7 +4,10 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
+            <button type="button" class="btn btn-sm btn-info mt-1" onclick="modalAction('{{ url('/supplier/import/') }}')"><i class="fa fa-upload"></i> Import</button>
             <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/supplier/create_ajax/') }}')">Tambah</button>
+            <a href="{{ url('/supplier/export_excel') }}" class="btn btn-sm btn-success mt-1"><i class="fa fa-file-excel"></i> Export Excel</a>
+            <a href="{{ url('/supplier/export_pdf') }}" class="btn btn-sm btn-danger mt-1"><i class="fa fa-file-pdf"></i> Export PDF</a>
         </div>
     </div>
     <div class="card-body">

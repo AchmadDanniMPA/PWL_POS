@@ -4,7 +4,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+                <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/kategori/import') }}')">Import</button>
                 <button type="button" class="btn btn-sm btn-primary mt-1" onclick="modalAction('{{ url('/kategori/create_ajax/') }}')">Tambah</button>
+                <a href="{{ url('/kategori/export_excel') }}" class="btn btn-sm btn-success mt-1">Export Excel</a>
+                <a href="{{ url('/kategori/export_pdf') }}" class="btn btn-sm btn-danger mt-1">Export PDF</a>
             </div>
         </div>
         <div class="card-body">
