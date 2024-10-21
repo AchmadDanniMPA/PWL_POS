@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/download_template', [UserController::class, 'download_template']);
             Route::get('/export_excel', [UserController::class, 'export_excel']);
             Route::get('/export_pdf', [UserController::class, 'export_pdf']);
+            Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
         });
         Route::group(['prefix' => 'level'], function () {
             Route::get('/', [LevelController::class, 'index']);
@@ -63,6 +64,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/import', [LevelController::class, 'import']);
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
             Route::get('/template_excel', [LevelController::class, 'template_excel'])->name('level.template_excel');
+            Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);
         });
     });
 
@@ -85,7 +87,8 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/import', [BarangController::class, 'import']);
             Route::post('/import_ajax', [BarangController::class, 'import_ajax']);
             Route::get('/export_excel', [BarangController::class, 'export_excel'])->name('barang.export_excel');
-            Route::get('/export_pdf', [BarangController::class, 'export_pdf'])->name('barang.export_pdf');    
+            Route::get('/export_pdf', [BarangController::class, 'export_pdf'])->name('barang.export_pdf');   
+            Route::get('/{id}/show_ajax', [BarangController::class, 'show_ajax']); 
         });
         Route::group(['prefix' => 'kategori'], function () {
             Route::get('/', [KategoriController::class, 'index']);
@@ -107,6 +110,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/download_template', [KategoriController::class, 'download_template']);
             Route::get('/export_excel', [KategoriController::class, 'export_excel']);
             Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);
+            Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);
         });
         Route::group(['prefix' => 'supplier'], function () {
             Route::get('/', [SupplierController::class, 'index']);
@@ -128,6 +132,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/export_excel', [SupplierController::class, 'export_excel']);
             Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);
             Route::get('/template_supplier', [SupplierController::class, 'template_supplier']);
+            Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax']);
         });
     });
 });

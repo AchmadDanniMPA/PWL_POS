@@ -38,7 +38,8 @@ class KategoriController extends Controller
         return DataTables::of($kategori)
             ->addIndexColumn()
             ->addColumn('action', function ($kategori) {
-                $btn  = '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn = '<button onclick="modalAction(\''.url('/kategori/' . $kategori->kategori_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
@@ -312,4 +313,12 @@ class KategoriController extends Controller
         }
         return redirect('/kategori');
     }
+    public function show_ajax($id)
+    {
+        $kategori = KategoriModel::find($id);
+        if (!$kategori) {
+            return response()->json(['status' => false, 'message' => 'Kategori tidak ditemukan']);
+        }
+        return view('kategori.show_ajax', compact('kategori'));
+    }    
 }

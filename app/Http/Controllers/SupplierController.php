@@ -36,7 +36,8 @@ class SupplierController extends Controller
         return DataTables::of($suppliers)
             ->addIndexColumn()
             ->addColumn('action', function ($supplier) {
-                $btn  = '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn = '<button onclick="modalAction(\''.url('/supplier/' . $supplier->supplier_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
@@ -321,5 +322,12 @@ class SupplierController extends Controller
         $writer->save('php://output');
         exit;
     }
-    
+    public function show_ajax($id)
+    {
+        $supplier = SupplierModel::find($id);
+        if (!$supplier) {
+            return response()->json(['status' => false, 'message' => 'Supplier tidak ditemukan']);
+        }
+        return view('supplier.show_ajax', compact('supplier'));
+    }    
 }

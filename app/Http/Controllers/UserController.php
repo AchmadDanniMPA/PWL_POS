@@ -136,8 +136,8 @@ class UserController extends Controller
         return DataTables::of($users)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
-                $btn = /*'<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= */'<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn = '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/user/' . $user->user_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
@@ -408,5 +408,13 @@ class UserController extends Controller
                 'newProfilePicturePath' => asset('images/pfp/' . $filename),
             ]);
         }
-    }    
+    }
+    public function show_ajax($id)
+    {
+        $user = UserModel::with('level')->find($id);
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => 'User not found']);
+        }
+        return view('user.show_ajax', compact('user'));
+    }
 }

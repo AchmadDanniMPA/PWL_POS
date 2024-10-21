@@ -38,7 +38,8 @@ class BarangController extends Controller
         return DataTables::of($barang)
             ->addIndexColumn()
             ->addColumn('action', function ($barang) {
-                $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
@@ -331,5 +332,13 @@ class BarangController extends Controller
         $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
         $pdf->setPaper('a4', 'portrait');
         return $pdf->stream('Data Barang ' . date('Y-m-d H:i:s') . '.pdf');
+    }
+    public function show_ajax($id)
+    {
+        $barang = BarangModel::with('kategori')->find($id);
+        if (!$barang) {
+            return response()->json(['status' => false, 'message' => 'Barang tidak ditemukan']);
+        }
+        return view('barang.show_ajax', compact('barang'));
     }
 }

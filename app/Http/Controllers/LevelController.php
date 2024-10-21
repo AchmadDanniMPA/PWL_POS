@@ -38,7 +38,8 @@ class LevelController extends Controller
         return DataTables::of($levels)
             ->addIndexColumn()
             ->addColumn('action', function ($level) {
-                $btn  = '<button onclick="modalAction(\'' . url('/level/' . $level->level_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn  = '<button onclick="modalAction(\''.url('/level/' . $level->level_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/level/' . $level->level_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/level/' . $level->level_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
@@ -316,5 +317,13 @@ class LevelController extends Controller
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($temp_file);
         return Response::download($temp_file, $fileName)->deleteFileAfterSend(true);
+    }
+    public function show_ajax($id)
+    {
+        $level = LevelModel::find($id);
+        if (!$level) {
+            return response()->json(['status' => false, 'message' => 'Level not found']);
+        }
+        return view('level.show_ajax', compact('level'));
     }
 }
