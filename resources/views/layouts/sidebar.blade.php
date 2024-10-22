@@ -21,7 +21,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/profil') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
+                <a href="{{ url('/profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profil Anda</p>
                 </a>
