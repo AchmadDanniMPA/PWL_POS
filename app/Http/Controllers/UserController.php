@@ -378,10 +378,24 @@ class UserController extends Controller
         $pdf->render();
         return $pdf->stream('Data User ' . date('Y-m-d H:i:s') . '.pdf');
     }
-    public function profile() {
-        return view('profile');
+    public function profile()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Profil Anda',
+            'list'  => ['Home', 'Profile']
+        ];
+        $activeMenu = 'profile';
+        return view('profil.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
-    public function profile_ajax(Request $request)
+    public function showChangePhotoForm()
+    {
+        return view('profil.change_photo');
+    }
+    public function showManageProfileForm()
+    {
+        return view('profil.manage');
+    }
+    public function updatePhoto(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
@@ -406,6 +420,35 @@ class UserController extends Controller
                 'status' => true,
                 'message' => 'Foto profil berhasil diupload',
                 'newProfilePicturePath' => asset('images/pfp/' . $filename),
+            ]);
+        }
+    }
+    public function updateProfile(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'username' => 'required|string|max:50|unique:m_user,username,' . auth()->user()->user_id . ',user_id',
+                'nama' => 'required|string|max:100',
+                'password' => 'nullable|string|min:6',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+            $user = UserModel::findOrFail(auth()->user()->user_id);
+            $user->username = $request->username;
+            $user->nama = $request->nama;
+            if ($request->password) {
+                $user->password = bcrypt($request->password);
+            }
+            $user->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'Profil berhasil diperbarui',
             ]);
         }
     }

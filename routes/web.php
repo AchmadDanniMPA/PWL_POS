@@ -19,7 +19,10 @@ Route::get('logout',[AuthController::class,'logout'])->middleware('auth');
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [WelcomeController::class, 'index']);
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-    Route::post('/profile_ajax', [UserController::class, 'profile_ajax']);
+    Route::get('/profile/change-photo', [UserController::class, 'showChangePhotoForm']);
+    Route::post('/profile/update-photo', [UserController::class, 'updatePhoto']);
+    Route::get('/profile/manage', [UserController::class, 'showManageProfileForm']);
+    Route::post('/profile/update', [UserController::class, 'updateProfile']);
 
     Route::middleware(['authorize:ADM'])->group(function(){
         Route::group(['prefix' => 'user'], function () {
