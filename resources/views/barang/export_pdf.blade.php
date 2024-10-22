@@ -26,7 +26,7 @@
         <table class="border-bottom-header">
             <tr>
                 <td width="15%" class="text-center">
-                    <img src="{{ asset('images/polinema-bw.png') }}">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/polinema-bw.png'))) }}"style="width: 60; height= 60;">
                 </td>
                 <td width="85%">
                     <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>

@@ -61,6 +61,18 @@
     <table class="border-bottom-header">
         <tr>
             <td width="15%" class="text-center">
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/polinema-bw.png'))) }}"style="width: 60; height= 60;">
+            </td>
+            <td width="85%">
+                <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
+                <span class="text-center d-block font-13 font-bold mb-1">POLITEKNIK NEGERI MALANG</span>
+                <span class="text-center d-block font-10">Jl. Soekarno-Hatta No. 9 Malang 65141</span>
+            </td>
+        </tr>
+    </table>
+    <table class="border-bottom-header">
+        <tr>
+            <td width="15%" class="text-center">
                 <img src="{{ asset('images/polinema-bw.png') }}" alt="Logo" class="image">
             </td>
             <td width="85%">
