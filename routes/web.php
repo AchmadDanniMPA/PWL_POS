@@ -8,6 +8,7 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\StokController;
 
 Route::pattern('id','[0-9]+');
 Route::get('login',[AuthController::class,'login'])->name('login');
@@ -136,6 +137,22 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);
             Route::get('/template_supplier', [SupplierController::class, 'template_supplier']);
             Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax']);
+        });
+        Route::group(['prefix' => 'stok'], function () {
+            Route::get('/', [StokController::class, 'index']);
+            Route::post('/list', [StokController::class, 'list']);
+            Route::get('/create_ajax', [StokController::class, 'create_ajax']);
+            Route::post('/store_ajax', [StokController::class, 'store_ajax']);
+            Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']);
+            Route::get('/{id}/edit_ajax', [StokController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [StokController::class, 'update_ajax']);
+            Route::get('/{id}/delete_ajax', [StokController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [StokController::class, 'delete_ajax']);
+            Route::get('/import_view', [StokController::class, 'import_view']);
+            Route::post('/import_excel', [StokController::class, 'import_excel']);
+            Route::get('/download_template', [StokController::class, 'download_template']);
+            Route::get('/export_excel', [StokController::class, 'export_excel']);
+            Route::get('/export_pdf', [StokController::class, 'export_pdf']);         
         });
     });
 });
