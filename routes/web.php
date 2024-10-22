@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StokController;
+use App\Http\Controllers\PenjualanController;
 
 Route::pattern('id','[0-9]+');
 Route::get('login',[AuthController::class,'login'])->name('login');
@@ -154,5 +155,21 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/export_excel', [StokController::class, 'export_excel']);
             Route::get('/export_pdf', [StokController::class, 'export_pdf']);         
         });
+        Route::group(['prefix' => 'penjualan'], function () {
+            Route::get('/', [PenjualanController::class, 'index']);
+            Route::post('/list', [PenjualanController::class, 'list']);
+            Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']);
+            Route::post('/store_ajax', [PenjualanController::class, 'store_ajax']);
+            Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);
+            Route::get('/{id}/edit_ajax', [PenjualanController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [PenjualanController::class, 'update_ajax']);
+            Route::get('/{id}/delete_ajax', [PenjualanController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);
+            Route::get('/download_template', [PenjualanController::class, 'download_template']);
+            Route::get('/import_view', [PenjualanController::class, 'import_view']);
+            Route::post('/import_excel', [PenjualanController::class, 'import_excel']);
+            Route::get('/export_excel', [PenjualanController::class, 'export_excel']);
+            Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);
+        });        
     });
 });
