@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 25, 2024 at 06:40 AM
+-- Generation Time: Oct 22, 2024 at 08:45 PM
 -- Server version: 8.0.33
--- PHP Version: 8.1.10
+-- PHP Version: 8.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `failed_jobs` (
   `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -45,7 +45,7 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -65,7 +65,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2024_09_16_212432_create_m_barang_table', 1),
 (10, '2024_09_16_212438_create_t_penjualan_table', 1),
 (11, '2024_09_16_212444_create_t_stok_table', 1),
-(12, '2024_09_16_212452_create_t_penjualan_detail_table', 1);
+(12, '2024_09_16_212452_create_t_penjualan_detail_table', 1),
+(13, '2024_10_21_214019_add_profile_picture_to_m_user_table', 2);
 
 -- --------------------------------------------------------
 
@@ -76,8 +77,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `m_barang` (
   `barang_id` bigint UNSIGNED NOT NULL,
   `kategori_id` bigint UNSIGNED NOT NULL,
-  `barang_kode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `barang_nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barang_kode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barang_nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `harga_beli` int NOT NULL,
   `harga_jual` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -103,7 +104,12 @@ INSERT INTO `m_barang` (`barang_id`, `kategori_id`, `barang_kode`, `barang_nama`
 (12, 1, 'BRG12', 'Barang 12', 120000, 125000, NULL, NULL),
 (13, 2, 'BRG13', 'Barang 13', 130000, 135000, NULL, NULL),
 (14, 2, 'BRG14', 'Barang 14', 140000, 145000, NULL, NULL),
-(15, 3, 'BRG15', 'Barang 15', 150000, 155000, NULL, NULL);
+(15, 3, 'BRG15', 'Barang 15', 150000, 155000, NULL, NULL),
+(17, 1, 'SBK-003', 'Telur Omega(10 Butir)', 22000, 25000, '2024-10-20 22:08:22', NULL),
+(18, 2, 'SNK-003', 'Sari Roti', 11500, 12500, '2024-10-20 22:08:22', NULL),
+(19, 3, 'MND-003', 'Shampo Pantene', 17500, 18500, '2024-10-20 22:08:22', NULL),
+(20, 4, 'BAY-003', 'Baju Bayi 2th', 89000, 92500, '2024-10-20 22:08:22', NULL),
+(21, 5, 'MNM-003', 'Cleo 600ml', 3750, 4300, '2024-10-20 22:08:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -113,8 +119,8 @@ INSERT INTO `m_barang` (`barang_id`, `kategori_id`, `barang_kode`, `barang_nama`
 
 CREATE TABLE `m_kategori` (
   `kategori_id` bigint UNSIGNED NOT NULL,
-  `kategori_kode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kategori_nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kategori_kode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kategori_nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -138,8 +144,8 @@ INSERT INTO `m_kategori` (`kategori_id`, `kategori_kode`, `kategori_nama`, `crea
 
 CREATE TABLE `m_level` (
   `level_id` bigint UNSIGNED NOT NULL,
-  `level_kode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `level_nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `level_kode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `level_nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -162,9 +168,9 @@ INSERT INTO `m_level` (`level_id`, `level_kode`, `level_nama`, `created_at`, `up
 
 CREATE TABLE `m_supplier` (
   `supplier_id` bigint UNSIGNED NOT NULL,
-  `supplier_kode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `supplier_nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `supplier_alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_kode` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -187,26 +193,30 @@ INSERT INTO `m_supplier` (`supplier_id`, `supplier_kode`, `supplier_nama`, `supp
 CREATE TABLE `m_user` (
   `user_id` bigint UNSIGNED NOT NULL,
   `level_id` bigint UNSIGNED NOT NULL,
-  `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `profile_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `m_user`
 --
 
-INSERT INTO `m_user` (`user_id`, `level_id`, `username`, `nama`, `password`, `created_at`, `updated_at`) VALUES
-(1, 1, 'admin', 'Administrator', '$2y$12$nyP.C4aivu6GMnaXJKMfcOi50iyhrn/Ksf7Ubg.2yIr0ETBo2ML7O', NULL, NULL),
-(2, 2, 'manager', 'Manager', '$2y$12$U3GmSgoFavfRTGxANvS5FeTslw/jd2OGWJfPVdHpEUlA7UCkIK09e', NULL, NULL),
-(3, 3, 'staff', 'Staff/Kasir', '$2y$12$f.QtZcNy.1io5/xpCnZnEux1GGwE7PSZ6MBnewiQlH9WO17wmMIW.', NULL, NULL),
-(5, 2, 'manager_dua', 'Manager 2', '$2y$12$Op26swRyqJ/IRUzTdhAb8OnaUY9vyS1BKlmdcLasYdYIKXaeA6QkK', '2024-09-24 12:37:14', '2024-09-24 12:37:14'),
-(6, 2, 'manager22', 'Manager Dua Dua', '$2y$12$rZZCd84EOnUFFCuDREhjT.Pe75cfy8pmKYtmD5pCHDNfKmxqiKM3e', '2024-09-24 13:23:33', '2024-09-24 13:23:33'),
-(7, 2, 'manager33', 'Manager Tiga Tiga', '$2y$12$69kIa3uFsW7FshuTZjt0V.J28/e0OQhkvjIgOswS6S7UzH4S8TZKi', '2024-09-24 13:32:21', '2024-09-24 13:32:21'),
-(8, 2, 'manager56', 'Manager55', '$2y$12$12AfmyVhog2XlfTCrQ1ZAeED419752hHjmvwCMwnG3FZy8tB41v9S', '2024-09-24 13:36:45', '2024-09-24 13:36:45'),
-(9, 2, 'manager12', 'Manager11', '$2y$12$.LjJaB07OLteMmpYZVxVG.9D10YApxqe2b9qNDLpsF6teJuJmabCy', '2024-09-24 13:44:23', '2024-09-24 13:44:23');
+INSERT INTO `m_user` (`user_id`, `level_id`, `username`, `nama`, `password`, `created_at`, `updated_at`, `profile_picture`) VALUES
+(1, 1, 'admin', 'Danni', '$2y$12$KGaet7.BuOirrnpdVUdCl.zneMr.07A73V4qjmyeRxuucVpQmfLGa', NULL, '2024-10-22 13:44:54', '1729556118_mountpass.png'),
+(2, 2, 'manager', 'Manager', '$2y$12$RkJKnUSLGhsodve70PKkz./TNPJyikinboHqe9Dv7WWSt2EWQlQMq', NULL, '2024-10-20 10:46:10', NULL),
+(3, 3, 'staff', 'Staff/Kasir', '$2y$12$6FCncr37fkyl70BnxE6RsOZLbuHX.2E5bxuCW5XpLzdF1hbVchyoC', NULL, '2024-10-20 10:46:22', NULL),
+(5, 2, 'manager_dua', 'Manager 2', '$2y$12$Op26swRyqJ/IRUzTdhAb8OnaUY9vyS1BKlmdcLasYdYIKXaeA6QkK', '2024-09-24 12:37:14', '2024-09-24 12:37:14', NULL),
+(6, 2, 'manager22', 'Manager Dua Dua', '$2y$12$rZZCd84EOnUFFCuDREhjT.Pe75cfy8pmKYtmD5pCHDNfKmxqiKM3e', '2024-09-24 13:23:33', '2024-09-24 13:23:33', NULL),
+(7, 2, 'manager33', 'Manager Tiga Tiga', '$2y$12$69kIa3uFsW7FshuTZjt0V.J28/e0OQhkvjIgOswS6S7UzH4S8TZKi', '2024-09-24 13:32:21', '2024-09-24 13:32:21', NULL),
+(8, 2, 'manager56', 'Manager55', '$2y$12$12AfmyVhog2XlfTCrQ1ZAeED419752hHjmvwCMwnG3FZy8tB41v9S', '2024-09-24 13:36:45', '2024-09-24 13:36:45', NULL),
+(9, 2, 'manager12', 'Manager11', '$2y$12$.LjJaB07OLteMmpYZVxVG.9D10YApxqe2b9qNDLpsF6teJuJmabCy', '2024-09-24 13:44:23', '2024-09-24 13:44:23', NULL),
+(11, 4, 'test', 'DanniTest', '$2y$12$v9q/hHVXNdrg7XijjAboV.Uf3hs3UarKGxz4ulQH9LIGajjti4V0K', '2024-09-25 00:48:04', '2024-10-20 02:30:25', NULL),
+(20, 4, 'ajax', 'editajax', '$2y$12$LPgV2lzQMYBbHozOAzHlAezwG6T0SWNO17gwzECFNHIw8TI0akLfS', '2024-10-20 02:33:52', '2024-10-20 02:36:35', NULL),
+(22, 3, 'registrasi', 'Test Registrasi', '$2y$12$YVeKahj5FyOm11fA.8KFne/aXtQwuA0k5f4urxK4hUL5p7MYOlKuy', '2024-10-20 18:48:39', '2024-10-20 18:48:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -215,8 +225,8 @@ INSERT INTO `m_user` (`user_id`, `level_id`, `username`, `nama`, `password`, `cr
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -228,11 +238,11 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -248,8 +258,8 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `t_penjualan` (
   `penjualan_id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `pembeli` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `penjualan_kode` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pembeli` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `penjualan_kode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `penjualan_tanggal` datetime NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -369,11 +379,11 @@ INSERT INTO `t_stok` (`stok_id`, `supplier_id`, `barang_id`, `user_id`, `stok_ta
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -491,37 +501,37 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `m_barang`
 --
 ALTER TABLE `m_barang`
-  MODIFY `barang_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `barang_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `m_kategori`
 --
 ALTER TABLE `m_kategori`
-  MODIFY `kategori_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `kategori_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `m_level`
 --
 ALTER TABLE `m_level`
-  MODIFY `level_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `level_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `m_supplier`
 --
 ALTER TABLE `m_supplier`
-  MODIFY `supplier_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `supplier_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `m_user`
 --
 ALTER TABLE `m_user`
-  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
