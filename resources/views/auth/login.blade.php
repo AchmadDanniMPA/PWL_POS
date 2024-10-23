@@ -16,6 +16,29 @@
         href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #00c6ff, #007f66);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .login-box, .register-box {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            background-color: #00c6ff;
+            border-color: #00c6ff;
+            color: white;
+        }
+        .btn:hover {
+            background-color: #007f66;
+            border-color: #007f66;
+        }
+    </style>
 </head>
 
 <body class="hold-transition login-page">

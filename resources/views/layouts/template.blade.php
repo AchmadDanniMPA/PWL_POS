@@ -23,6 +23,76 @@
   <link rel="stylesheet" href={{ asset('adminlte/dist/css/adminlte.min.css')}}>
 
   @stack('css') <!-- untuk memanggil custom CSS dari perintah push('css') pada masing-masing view -->
+  <style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: 'Source Sans Pro', sans-serif;
+        background: linear-gradient(135deg, #00c6ff, #007f66);
+        background-attachment: fixed;
+        background-size: cover;
+        color: white;
+    }
+    .navbar {
+        background-color: transparent !important;
+        color: white !important;
+    }
+    .navbar a, .navbar .nav-link {
+        color: white !important;
+    }
+    .sidebar-dark-primary {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    .brand-link {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .content-wrapper {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .main-footer {
+        background: transparent;
+        color: white;
+    }
+    .breadcrumb-item.active {
+        color: #00c6ff !important;
+    }
+    body, html, .content-wrapper, .sidebar, .navbar, .footer, .breadcrumb, .dropdown-menu {
+        color: #333333 !important;
+    }
+    .navbar a, .navbar .nav-link {
+        color: #ffffff !important;
+    }
+    .btn {
+        color: #ffffff !important;
+    }
+    .sidebar-dark-primary .nav-link {
+        color: #ffffff !important;
+    }
+    .main-footer {
+        background: transparent;
+        color: #333333 !important;
+    }
+    .breadcrumb-item.active {
+        color: #007f66 !important;
+    }
+    .sidebar-dark-primary .nav-treeview > .nav-item > .nav-link {
+        color: #c2c7d0 !important;
+    }
+    .dropdown-menu {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+    }
+    .dropdown-menu a {
+        color: #ffffff !important;
+    }
+    .dropdown-menu a:hover {
+        background-color: #00c6ff !important;
+        color: #ffffff !important;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -36,7 +106,6 @@
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" class="brand-link">
         <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    
         <span class="brand-text font-weight-light">PWL - Starter Code</span>
     </a>
 
