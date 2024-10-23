@@ -20,7 +20,6 @@
         body, html {
             height: 100%;
             margin: 0;
-            font-family: 'Source Sans Pro', sans-serif;
             background: linear-gradient(135deg, #00c6ff, #007f66);
             background-attachment: fixed;
             background-size: cover;
