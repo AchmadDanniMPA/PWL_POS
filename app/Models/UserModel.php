@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -14,8 +15,8 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $table = 'm_user';
     protected $primaryKey = 'user_id';
     protected $fillable = ['level_id', 'username', 'nama', 'password', 'profile_picture'];
-    protected $hidden=['password'];
-    protected $casts=['password'=>'hashed'];
+    protected $hidden = ['password'];
+    protected $casts = ['password' => 'hashed'];
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -24,9 +25,15 @@ class UserModel extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    public function level():BelongsTo
+    protected function profilePicture(): Attribute
     {
-        return $this->belongsTo(LevelModel::class,'level_id','level_id');
+        return Attribute::make(
+            get: fn($profile_picture) => $profile_picture ? url('/images/pfp/' . $profile_picture) : null
+        );
+    }
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
     }
     public function getRoleName(): string
     {
@@ -34,7 +41,7 @@ class UserModel extends Authenticatable implements JWTSubject
     }
     public function hasRole($role): bool
     {
-        return $this->level->level_kode==$role;
+        return $this->level->level_kode == $role;
     }
     public function getRole()
     {
